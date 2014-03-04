@@ -5,18 +5,11 @@
 
 rightscale_marker
 
-# At recipe run time, gather the actual live hostname of the server and
-# use it as the server 'certname' when puppet executes. This guarantees
-# that if we've brought up a *loned* server, that any existing *certname*
-# value in the puppet.conf is ignored.
-#real_fqdn = Mixlib::ShellOut.new('/bin/hostname -f').run_command.stdout.strip
-
 # Repeatedly execute the 'puppet agent -t' command until the command
 # exits with a '0' exit code, or fails entirely.
 execute "run puppet-agent" do
   command     "puppet agent -t --pluginsync " +
               " --allow_duplicate_certs" +
-              " --config_file_name NON_EXISTANT_FILE" +
               " --environment #{node[:'nd-puppet'][:config][:environment]} " +
               " --ca_server #{node[:'nd-puppet'][:config][:ca_server]} " +
               " --server #{node[:'nd-puppet'][:config][:server]} " +
