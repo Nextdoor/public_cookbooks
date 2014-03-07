@@ -31,6 +31,7 @@ template "/etc/facter/facts.d/nd-puppet.txt" do
     :puppet_environment => node[:'nd-puppet'][:config][:environment],
     :puppet_node        => node[:'nd-puppet'][:config][:puppet_node],
     :puppet_server      => node[:'nd-puppet'][:config][:server],
+    :puppet_ca_server   => node[:'nd-puppet'][:config][:ca_server],
     :facts              => node[:'nd-puppet'][:config][:facts]
   )
 end

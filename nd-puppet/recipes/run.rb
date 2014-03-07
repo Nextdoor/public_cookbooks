@@ -5,11 +5,21 @@
 
 rightscale_marker
 
+# Determine whether or not we're going to be sending Puppet reports
+# or not when we run Puppet below.
+case node[:'nd-puppet'][:config][:report]
+when "true"
+  report="--report"
+when "false"
+  report="--no-report"
+end
+
 # Repeatedly execute the 'puppet agent -t' command until the command
 # exits with a '0' exit code, or fails entirely.
 execute "run puppet-agent" do
   command     "puppet agent -t --pluginsync " +
-              " --allow_duplicate_certs" +
+              " --allow_duplicate_certs " +
+              " #{report} " +
               " --environment #{node[:'nd-puppet'][:config][:environment]} " +
               " --ca_server #{node[:'nd-puppet'][:config][:ca_server]} " +
               " --server #{node[:'nd-puppet'][:config][:server]} " +

@@ -72,6 +72,17 @@ attribute "nd-puppet/config/node_name",
   :category     => "Nextdoor: Puppet Settings",
   :recipes      => [ "nd-puppet::default", "nd-puppet::config", "nd-puppet::run" ]
 
+attribute "nd-puppet/config/report",
+  :display_name => "Puppet Option: report",
+  :description  =>
+    "Whether or not to send back Puppet Reports. Requires that your Puppet " +
+    "server is configured to accept reports and handle them.",
+  :default      => "true",
+  :choice       => [ "true", "false" ],
+  :required     => "optional",
+  :category     => "Nextdoor: Puppet Settings",
+  :recipes      => [ "nd-puppet::default", "nd-puppet::run" ]
+
 attribute "nd-puppet/config/node_name_fact",
   :display_name => "Puppet Option: node_name_fact",
   :description  =>

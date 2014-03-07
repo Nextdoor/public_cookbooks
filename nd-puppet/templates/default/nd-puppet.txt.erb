@@ -6,6 +6,10 @@ puppet_node=<%= @puppet_node %>
 # The environment passed to Puppet to define the environment type
 puppet_environment=<%= @puppet_environment %>
 
+# The puppet server name passed in
+puppet_server=<%= @puppet_server %>
+puppet_ca_server=<%= @puppet_ca_server %>
+
 <% if @facts %># Custom facts supplied from the rs-puppet::config::facts input
 <% @facts.each do |fact| %><%= fact %>
 <% end %><% end %>

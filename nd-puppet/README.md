@@ -43,6 +43,8 @@ attributes which have inputs can be found in the metadata.rb file.
 * `node[:'nd-puppet'][:config][:facts]` - Array of custom `key=value` puppet facts.
 * `node[:'nd-puppet'][:config][:puppet_node]` - The Puppet node name.
   (default: $hostname)
+* `node[:'nd-puppet'][:config][:report]` - Whether or not to send Puppet reports.
+  (default: true)
 * `node[:'nd-puppet'][:config][:node_name]` - Puppet Option: node\_name.
   (default: node\_name)
 * `node[:'nd-puppet'][:config][:node_name_fact]` - Puppet Option: node\_name\_fact.
@@ -64,6 +66,7 @@ facts passed into the `node[:'nd-puppet'][:config][:facts]` server input.
  * `puppet_node` - Value from `node[:'nd-puppet'][:config][:puppet_node]`
  * `puppet_environment` - Value from `node[:'nd-puppet'][:config][:environment]`
  * `puppet_server` - Value from `node[:'nd-puppet'][:config][:server]`
+ * `puppet_ca_server` - Value from `node[:'nd-puppet'][:config][:ca_server]`
 
 ## Custom Facts
 
