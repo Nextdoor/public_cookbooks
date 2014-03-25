@@ -21,7 +21,7 @@ execute "run puppet-agent" do
               " #{report} " +
               " --pluginsync " +
               " --allow_duplicate_certs " +
-              " --detailed-exit-codes " +
+              " --detailed-exitcodes " +
               " --environment #{node[:'nd-puppet'][:config][:environment]} " +
               " --ca_server #{node[:'nd-puppet'][:config][:ca_server]} " +
               " --server #{node[:'nd-puppet'][:config][:server]} " +
