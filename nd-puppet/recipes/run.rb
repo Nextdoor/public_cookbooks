@@ -17,9 +17,11 @@ end
 # Repeatedly execute the 'puppet agent -t' command until the command
 # exits with a '0' exit code, or fails entirely.
 execute "run puppet-agent" do
-  command     "puppet agent -t --pluginsync " +
-              " --allow_duplicate_certs " +
+  command     "puppet agent -t " +
               " #{report} " +
+              " --pluginsync " +
+              " --allow_duplicate_certs " +
+              " --detailed-exit-codes " +
               " --environment #{node[:'nd-puppet'][:config][:environment]} " +
               " --ca_server #{node[:'nd-puppet'][:config][:ca_server]} " +
               " --server #{node[:'nd-puppet'][:config][:server]} " +

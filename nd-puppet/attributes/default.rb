@@ -15,7 +15,7 @@ default[:'nd-puppet'][:config][:puppet_node] = node[:fqdn]
 default[:'nd-puppet'][:config][:node_name] = "facter"
 default[:'nd-puppet'][:config][:node_name_fact] = "puppet_node"
 default[:'nd-puppet'][:config][:challenge_password] = nil
-default[:'nd-puppet'][:config][:waitforcert] = 300
+default[:'nd-puppet'][:config][:waitforcert] = 15
 
 # Generate a random string used to temporarily identify this host in
 # RightScale with a tag (done below). This is destroyed once the host
