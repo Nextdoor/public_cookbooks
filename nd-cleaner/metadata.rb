@@ -28,9 +28,9 @@ attribute "nd-cleaner/default/dpkgs",
 attribute "nd-cleaner/default/purge_crontabs",
   :display_name => "Users to purge crontab entries for",
   :description  =>
-    "A list of userids to purge crontabs from (",
-  :required     => "optional",
+    "A list of userids to purge crontabs from",
+  :required     => "recommended",
   :type         => "array",
-  :default      => "root",
+  :default      => [ "root" ],
   :category     => "Nextdoor: Cleaner",
   :recipes      => [ "nd-cleaner::default" ]
