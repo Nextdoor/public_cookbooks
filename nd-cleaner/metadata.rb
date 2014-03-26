@@ -21,7 +21,8 @@ attribute "nd-cleaner/default/dpkgs",
     "A list of Debian packages that should be removed for system" +
     "cleaning (generally packages that install files to non-root " +
     "storage locations).",
-  :required     => "optional",
+  :required     => "recommended",
+  :type         => "array",
   :category     => "Nextdoor: Cleaner",
   :recipes      => [ "nd-cleaner::default" ]
 
