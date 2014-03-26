@@ -30,6 +30,15 @@ execute "remove sudo-io logs" do
   returns [0]
 end 
 
+# Purge crontab entries?
+node[:'nd-cleaner'][:default][:purge_crontabs].each do |user|
+  execute "purge_crontabs_for_#{user}" do
+    command "crontab -r -u #{user}"
+    path    [ "/usr/sbin", "/usr/bin", "/sbin", "/bin" ]
+    returns [0]
+  end
+end
+
 # Wipe out RightScale logs
 file "/var/log/install" do
   backup false

@@ -4,7 +4,7 @@ maintainer_email 'cookbooks@nextdoor.com'
 license          'Apache 2.0'
 description      'Cleans a system for imaging'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.0.2'
+version          '0.0.3'
 
 depends "rightscale"
 depends "nd-puppet"
@@ -22,5 +22,15 @@ attribute "nd-cleaner/default/dpkgs",
     "cleaning (generally packages that install files to non-root " +
     "storage locations).",
   :required     => "optional",
+  :category     => "Nextdoor: Cleaner",
+  :recipes      => [ "nd-cleaner::default" ]
+
+attribute "nd-cleaner/default/purge_crontabs",
+  :display_name => "Users to purge crontab entries for",
+  :description  =>
+    "A list of userids to purge crontabs from (",
+  :required     => "optional",
+  :type         => "array",
+  :default      => "root",
   :category     => "Nextdoor: Cleaner",
   :recipes      => [ "nd-cleaner::default" ]
