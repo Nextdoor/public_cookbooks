@@ -8,8 +8,9 @@ rightscale_marker
 # Install the various required packages for Puppet to function
 # properly on most hosts.
 node[:'nd-cleaner'][:default][:dpkgs].each do |pkg|
-  package pkg
-  action :remove
+  package pkg do
+    action :purge
+  end
 end
 
 # Wipe out any system/application logs
