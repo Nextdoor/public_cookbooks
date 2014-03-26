@@ -35,7 +35,7 @@ node[:'nd-cleaner'][:default][:purge_crontabs].each do |user|
   execute "purge_crontabs_for_#{user}" do
     command "crontab -r -u #{user}"
     path    [ "/usr/sbin", "/usr/bin", "/sbin", "/bin" ]
-    returns [0]
+    returns [0, 1]
   end
 end
 
