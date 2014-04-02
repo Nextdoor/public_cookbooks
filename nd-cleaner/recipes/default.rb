@@ -30,6 +30,11 @@ execute "remove sudo-io logs" do
   path    [ "/usr/sbin", "/usr/bin", "/sbin", "/bin" ]
   returns [0]
 end 
+execute "remove old script metadata" do
+  command "rm -rf /etc/.volumeized"
+  path    [ "/usr/sbin", "/usr/bin", "/sbin", "/bin" ]
+  returns [0]
+end 
 
 # Purge crontab entries?
 node[:'nd-cleaner'][:default][:purge_crontabs].each do |user|
