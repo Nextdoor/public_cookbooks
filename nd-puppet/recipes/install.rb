@@ -58,7 +58,7 @@ end
 
 # Install the puppetlabs-release package if its not already there
 # (if its installed, then notify the aptitude update to occur)
-package "puppetlabs-release" do
+dpkg_package "puppetlabs-release" do
   source package_deb
   action :install
   notifies :run, resources(:execute => "update_aptitude"), :immediately
