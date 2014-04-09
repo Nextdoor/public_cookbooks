@@ -66,7 +66,7 @@ end
 # package is installed first, then the puppet agent package.
 [ "puppet-common", "puppet" ].each do |pkg|
   package pkg do
-    version node[:'nd-puppet'][:install][:version]
+    version "#{node[:'nd-puppet'][:install][:version]}"
     options "--force-yes"
     notifies :run, resources(:execute => "update_aptitude"), :immediately
   end
