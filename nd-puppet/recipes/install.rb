@@ -40,7 +40,7 @@ end
 lsb_codename = node[:'lsb'][:codename]
 package_name = "puppetlabs-release-#{lsb_codename}.deb"
 package_url  = "http://apt.puppetlabs.com/#{package_name}"
-package_deb  = "/tmp/#{package_name}"
+package_deb  = "/root/#{package_name}"
 
 # Downoad the package
 remote_file package_deb do
