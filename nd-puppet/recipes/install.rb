@@ -56,10 +56,8 @@ end
 # Always do an aptitude update. Only execute this if it receives
 # a notification below that the puppet/puppet-common packages need
 # to be installed.
-bash "update_aptitude" do
-  code <<-EOH
-  apt-get update -o APT::Get::List-Cleanup="0"
-  EOH
+execute "update_aptitude" do
+  command "apt-get update -o APT::Get::List-Cleanup=0"
   ignore_failure true
   action :nothing
 end
