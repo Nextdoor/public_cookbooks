@@ -53,12 +53,15 @@ dpkg_package "puppetlabs-release" do
   action :install
 end
 
-# Always do an aptitude update. This may take 30-60 seconds, but it improves
-# reliability of the apt update/install.
+# Always do an aptitude update. Only execute this if it receives
+# a notification below that the puppet/puppet-common packages need
+# to be installed.
 bash "update_aptitude" do
   code <<-EOH
   apt-get update -o APT::Get::List-Cleanup="0"
   EOH
+  ignore_failure true
+  action :nothing
 end
 
 # Now install Puppet with the requsted version. The puppet-common
@@ -67,5 +70,6 @@ end
   package pkg do
     version node[:'nd-puppet'][:install][:version]
     options "--force-yes"
+    notifies :run, resources(:execute => "update_aptitude"), :immediately
   end
 end
