@@ -29,7 +29,7 @@ attributes which have inputs can be found in the metadata.rb file.
 
 ## Puppet installation attributes
 
-* `node[:'nd-puppet'][:default][:version]` - The Puppet version to install.
+* `node[:'nd-puppet'][:install][:version]` - The Puppet version to install.
 
 ## Puppet configuration attributes
 

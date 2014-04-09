@@ -26,7 +26,7 @@ recipe "nd-puppet::run",
   "Executes Puppet multiple times until it exits with a 0 exit code"
 
 # Installation Attributes
-attribute "nd-puppet/default/version",
+attribute "nd-puppet/install/version",
   :display_name => "Puppet Package Version",
   :description  =>
     "The Puppet version to install (apt package version number)",
