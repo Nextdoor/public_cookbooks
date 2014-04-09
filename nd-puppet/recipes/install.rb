@@ -47,12 +47,6 @@ remote_file package_deb do
   source package_url
 end
 
-# Install the package
-dpkg_package "puppetlabs-release" do
-  source package_deb
-  action :install
-end
-
 # Always do an aptitude update. Only execute this if it receives
 # a notification below that the puppet/puppet-common packages need
 # to be installed.
@@ -62,12 +56,19 @@ execute "update_aptitude" do
   action :nothing
 end
 
+# Install the puppetlabs-release package if its not already there
+# (if its installed, then notify the aptitude update to occur)
+package "puppetlabs-release" do
+  source package_deb
+  action :install
+  notifies :run, resources(:execute => "update_aptitude"), :immediately
+end
+
 # Now install Puppet with the requsted version. The puppet-common
 # package is installed first, then the puppet agent package.
 [ "puppet-common", "puppet" ].each do |pkg|
   package pkg do
     version "#{node[:'nd-puppet'][:install][:version]}"
     options "--force-yes"
-    notifies :run, resources(:execute => "update_aptitude"), :immediately
   end
 end
