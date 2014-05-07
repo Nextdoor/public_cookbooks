@@ -24,10 +24,12 @@ node[:'nd-puppet'][:config][:state_files].each do |state_file|
       directory state_file do
         action :delete
         recursive true
+        backup false
       end
     else
       file state_file do
         action :delete
+        backup false
       end
     end
   end
