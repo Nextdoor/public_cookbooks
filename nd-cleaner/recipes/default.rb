@@ -51,5 +51,11 @@ file "/var/log/install" do
   action :delete
 end
 
+# Purge out Opsmatic install identity files
+directory "/var/db/opsmatic-agent/identity" do
+  action :delete
+  recursive true
+end
+
 # Clean the Puppet certs
 include_recipe "nd-puppet::clean" 
