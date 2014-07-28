@@ -32,4 +32,3 @@ default[:'nd-puppet'][:config][:state_files] = [
 
 # Puppet run attributes
 default[:'nd-puppet'][:run][:retries] = 5
-default[:'nd-puppet'][:run][:retry_delay] = 0
