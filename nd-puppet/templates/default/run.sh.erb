@@ -1,0 +1,82 @@
+#!/bin/bash -x
+#
+# Semi-intelligent Puppet Run script that executes puppet until there are
+# either no changes reported (exit code 0), or it hits a max-retries
+# count (usually 6).
+#
+# Handles the scenario where Puppet is already running in the background
+# by sleeping and then running as soon as Puppet is done.
+#
+
+ENV=<%= @environment %>
+CA_SERVER=<%= @ca_server %>
+SERVER=<%= @server %>
+NODE_NAME=<%= @node_name %>
+NODE_NAME_FACT=<%= @node_name_fact %>
+WAITFORCERT=<%= @waitforcert %>
+RETRIES=<%= @retries %>
+REPORT=<%= @report %>
+
+# Unchanging variables ..
+AGENT_LOCK_FILE=/var/lib/puppet/state/agent_catalog_run.lock
+RUN_SUMMARY_FILE=/var/lib/puppet/state/last_run_summary.yaml
+
+# Put together a single variable with our entire puppet run command
+CMD="puppet agent -t \
+  ${REPORT}
+  --pluginsync \
+  --allow_duplicate_certs \
+  --detailed-exitcodes \
+  --environment ${ENV} \
+  --ca_server ${CA_SERVER} \
+  --server ${SERVER} \
+  --node_name ${NODE_NAME} \
+  --node_name_fact ${NODE_NAME_FACT} \
+  --waitforcert ${WAITFORCERT}"
+
+# First, begin our outer-loop that maxes out at $RETRIES.
+for (( C=1; C<=$RETRIES; C++ )); do
+  echo "Puppet Agent execution loop $C/$RETRIES beginning..."
+
+  # Now, first check if puppet is already running. If it is, sleep until
+  # its done running. Validate whether or not the lock file contains a PID
+  # that is currently executing -- if not, purge the stale lock file.
+  while [[ -e "${AGENT_LOCK_FILE}" ]]; do
+    PID=$(cat $AGENT_LOCK_FILE)
+
+    echo "$AGENT_LOCK_FILE claims $PID is running... waiting up to 5 seconds."
+
+    if [[ ! -e "/proc/${PID}" ]]; then
+      echo "Stale lock file ($AGENT_LOCK_FILE) detected. Purging."
+      rm -f $AGENT_LOCK_FILE
+      break
+    fi
+
+    sleep 5
+  done
+
+  # If this host has a pre-existing Puppet state file, it means that Puppet
+  # has executed previously ... so we can check whether or not that file
+  # indicates any changes were made. If no changes were made, we bail out
+  # quickly.
+  #
+  # Note: This directory is purged by the nd-puppet::clean script, so on
+  # a host where Puppet has been run, but then the host has been imaged, this
+  # file should not exist and we should skip the check.
+  if [[ -e "${RUN_SUMMARY_FILE}" ]] &&
+     [[ $(grep 'changed: 0' $RUN_SUMMARY_FILE) ]]; then
+     echo "$RUN_SUMMARY_FILE claims zero resources changed. We're done."
+     exit 0
+  fi
+
+  # Finally, execute Puppet. If puppet exits exits with a >0 exit code,
+  # we purge the state files. This is because they will actually write out
+  # 'changed: 0' to a state file. The simplest solution is to purge the
+  # last run summary file so that our above-check doesnt read it.
+  $CMD && exit 0 || rm -f $RUN_SUMMARY_FILE
+done
+
+# If we get here, then the 'exit 0' above never succeeded and we must have
+# a problem
+echo "Puppet failed to run cleanly after $RETRIES attempts. Exiting loudly."
+exit 1

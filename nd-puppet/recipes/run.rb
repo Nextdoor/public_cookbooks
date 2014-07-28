@@ -14,25 +14,30 @@ when "false"
   report="--no-report"
 end
 
-# Repeatedly execute the 'puppet agent -t' command until the command
-# exits with a '0' exit code, or fails entirely.
+# Push a script that will be used to execute Puppet repeatedly until
+# it either fails multiple times, or executes successfully and quietly.
+template "/etc/puppet/run.sh" do
+  source "run.sh.erb"
+  owner  "root"
+  group  "root"
+  mode   0755
+  variables(
+    :report         => report,
+    :environment    => node[:'nd-puppet'][:config][:environment],
+    :ca_server      => node[:'nd-puppet'][:config][:ca_server],
+    :server         => node[:'nd-puppet'][:config][:server],
+    :node_name      => node[:'nd-puppet'][:config][:node_name],
+    :node_name_fact => node[:'nd-puppet'][:config][:node_name_fact],
+    :waitforcert    => node[:'nd-puppet'][:config][:waitforcert],
+    :retries        => node[:'nd-puppet'][:run][:retries]
+  )
+end
+
+# Execute the puppet run script we pushed above
 execute "run puppet-agent" do
-  command     "puppet agent -t " +
-              " #{report} " +
-              " --pluginsync " +
-              " --allow_duplicate_certs " +
-              " --detailed-exitcodes " +
-              " --environment #{node[:'nd-puppet'][:config][:environment]} " +
-              " --ca_server #{node[:'nd-puppet'][:config][:ca_server]} " +
-              " --server #{node[:'nd-puppet'][:config][:server]} " +
-              " --node_name #{node[:'nd-puppet'][:config][:node_name]} " + 
-              " --node_name_fact #{node[:'nd-puppet'][:config][:node_name_fact]}" +
-              " --waitforcert #{node[:'nd-puppet'][:config][:waitforcert]}"
+  command     "/etc/puppet/run.sh"
   path        [ "/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin",
                 "/sbin", "/bin" ]
-  not_if      "grep \'changed: 0\' /var/lib/puppet/state/last_run_summary.yaml"
-  retries     node[:'nd-puppet'][:run][:retries]
-  retry_delay node[:'nd-puppet'][:run][:retry_delay]
   returns     [0]
 end
 
