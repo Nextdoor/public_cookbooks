@@ -13,6 +13,13 @@ node[:'nd-cleaner'][:default][:dpkgs].each do |pkg|
   end
 end
 
+# Clean up the entire aptitude cache tree
+execute "apt-get clean" do
+  command "apt-get clean"
+  path    [ "/usr/bin", "/bin" ]
+  returns [0]
+end
+
 # Wipe out any system/application logs
 execute "logrotate" do
   command "logrotate -f /etc/logrotate.conf"
@@ -29,12 +36,12 @@ execute "remove sudo-io logs" do
   command "rm -rf /var/log/sudo-io/*"
   path    [ "/usr/sbin", "/usr/bin", "/sbin", "/bin" ]
   returns [0]
-end 
+end
 execute "remove old script metadata" do
   command "rm -rf /etc/.volumeized"
   path    [ "/usr/sbin", "/usr/bin", "/sbin", "/bin" ]
   returns [0]
-end 
+end
 
 # Purge crontab entries?
 node[:'nd-cleaner'][:default][:purge_crontabs].each do |user|
@@ -58,4 +65,4 @@ directory "/var/db/opsmatic-agent/identity" do
 end
 
 # Clean the Puppet certs
-include_recipe "nd-puppet::clean" 
+include_recipe "nd-puppet::clean"
