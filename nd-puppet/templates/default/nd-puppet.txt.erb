@@ -1,7 +1,7 @@
 # This Facter file was installed by the nd-puppet::config cookbook.
 
 # The node_name passed to Puppet to define the node type
-puppet_node=<%= @puppet_node %>
+<% if @puppet_node %>puppet_node=<%= @puppet_node %>|<%= @hostname %><% else %>puppet_node=<%= @hostname %><% end -%>
 
 # The environment passed to Puppet to define the environment type
 puppet_environment=<%= @puppet_environment %>
