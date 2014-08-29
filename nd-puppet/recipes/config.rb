@@ -27,13 +27,14 @@ template "/etc/facter/facts.d/nd-puppet.txt" do
   owner  "root"
   group  "root"
   mode   0644
-  variables(
+  variables({
     :puppet_environment => node[:'nd-puppet'][:config][:environment],
     :puppet_node        => node[:'nd-puppet'][:config][:puppet_node],
     :puppet_server      => node[:'nd-puppet'][:config][:server],
     :puppet_ca_server   => node[:'nd-puppet'][:config][:ca_server],
-    :facts              => node[:'nd-puppet'][:config][:facts]
-  )
+    :facts              => node[:'nd-puppet'][:config][:facts],
+    :hostname           => node["hostname"]
+  })
 end
 
 # If the challenge_password option was supplied, then we create the
@@ -43,10 +44,10 @@ template "/etc/puppet/csr_attributes.yaml" do
   owner  "root"
   group  "root"
   mode   0644
-  variables(
+  variables({
     :challenge_password => node[:'nd-puppet'][:config][:challenge_password],
     :pp_preshared_key   => node[:'nd-puppet'][:config][:pp_preshared_key]
-  )
+  })
   only_if { node[:'nd-puppet'][:config][:challenge_password] }
 end
 

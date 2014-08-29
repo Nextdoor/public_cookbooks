@@ -17,6 +17,13 @@ WAITFORCERT=<%= @waitforcert %>
 RETRIES=<%= @retries %>
 REPORT=<%= @report %>
 
+# Make absolutely sure our hostname is setup properly. This is checked
+# against /etc/hostname and the `domainname` command.
+hostname --file /etc/hostname
+export DOMAIN=$(domainname)
+export HOSTNAME=$(cat /etc/hostname)
+echo "FQDN: ${HOSTNAME}.${DOMAIN}"
+
 # Unchanging variables ..
 AGENT_LOCK_FILE=/var/lib/puppet/state/agent_catalog_run.lock
 RUN_SUMMARY_FILE=/var/lib/puppet/state/last_run_summary.yaml
