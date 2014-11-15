@@ -5,6 +5,15 @@
 
 marker "recipe_start"
 
+# This is used to pick a few repos and package versions
+lsb_codename = node[:'lsb'][:codename]
+
+if lsb_codename == "trusty"
+  rubygems_package = "rubygems-integration"
+else
+  rubygems_package = "rubygems"
+end
+
 # Install the various required packages for Puppet to function
 # properly on most hosts.
 [ "apt-transport-https",
@@ -14,7 +23,7 @@ marker "recipe_start"
   "lsb-core",
   "lsb-release",
   "lsb-security",
-  "rubygems",
+  rubygems_package,
   "wget",
 
   # Requirements for building the right_api_client gem
@@ -46,7 +55,6 @@ gem_package "right_api_client" do
 end
 
 # Download the Puppetlabs Apt package that installs their repo
-lsb_codename = node[:'lsb'][:codename]
 package_name = "puppetlabs-release-#{lsb_codename}.deb"
 package_url  = "http://apt.puppetlabs.com/#{package_name}"
 package_deb  = "/root/#{package_name}"
