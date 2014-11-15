@@ -54,5 +54,9 @@ end
 # Tag the host to mark it as "awaiting signature". The Puppet Masters use this
 # to find the host and validate that its the right host. This tag is destroyed
 # once the the puppet runs have exited sucessfully.
-right_link_tag "nd:puppet_state=waiting"
-right_link_tag "nd:puppet_secret=#{node[:'nd-puppet'][:config][:pp_preshared_key]}"
+machine_tag "nd:puppet_state=waiting" do
+  action :create
+end
+machine_tag "nd:puppet_secret=#{node[:'nd-puppet'][:config][:pp_preshared_key]}" do
+  action :create
+end

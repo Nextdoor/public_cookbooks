@@ -43,7 +43,9 @@ end
 
 # At this point, Puppet has run successfully, so we remove the tag indicating
 # this host needs its cert signed.
-right_link_tag "nd:puppet_state=signed"
-right_link_tag "nd:puppet_secret=#{node[:'nd-puppet'][:config][:pp_preshared_key]}" do
+machine_tag "nd:puppet_state=signed" do
+  action :create
+end
+machine_tag "nd:puppet_secret=#{node[:'nd-puppet'][:config][:pp_preshared_key]}" do
   action :remove
 end
