@@ -47,5 +47,5 @@ machine_tag "nd:puppet_state=signed" do
   action :create
 end
 machine_tag "nd:puppet_secret=#{node[:'nd-puppet'][:config][:pp_preshared_key]}" do
-  action :remove
+  action :delete
 end
