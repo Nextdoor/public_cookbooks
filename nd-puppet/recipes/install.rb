@@ -15,16 +15,25 @@ marker "recipe_start"
   "lsb-release",
   "lsb-security",
   "rubygems",
-  "wget"
+  "wget",
+
+  # Requirements for building the right_api_client gem
+  "ruby-dev",
+  "gcc"
 ].each do |pkg|
   package pkg
 end
 
 # The mime-types 2.0+ gem relies on Ruby 1.9+, but most systems
 # specifically come with Ruby 1.8. Mime-types is a dependency
-# for the right_api_client below.
+# for the right_api_client below. (Same issue with the rest-client)
 gem_package "mime-types" do
   version "1.25"
+  gem_binary "/usr/bin/gem"
+  options "--no-ri --no-rdoc"
+end
+gem_package "rest-client" do
+  version "1.6.7"
   gem_binary "/usr/bin/gem"
   options "--no-ri --no-rdoc"
 end
