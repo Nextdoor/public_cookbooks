@@ -3,7 +3,7 @@
 # Recipe:: config
 #
 
-rightscale_marker
+marker "recipe_start"
 
 # Step 1 is to figure out whether or not we've been run before. If we have
 # then we exit without running any of these configuration steps.

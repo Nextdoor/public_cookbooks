@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-rightscale_marker
+marker "recipe_start"
 
 include_recipe "nd-puppet::install" 
 include_recipe "nd-puppet::config" 
