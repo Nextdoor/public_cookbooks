@@ -35,10 +35,11 @@ end
 
 # Execute the puppet run script we pushed above
 execute "run puppet-agent" do
-  command     "/etc/puppet/run.sh"
-  path        [ "/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin",
-                "/sbin", "/bin" ]
-  returns     [0]
+  command "/etc/puppet/run.sh"
+  path    [ "/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin",
+            "/sbin", "/bin" ]
+  returns [0]
+  timeout node[:'nd-puppet'][:config][:timeout].to_i
 end
 
 # At this point, Puppet has run successfully, so we remove the tag indicating
