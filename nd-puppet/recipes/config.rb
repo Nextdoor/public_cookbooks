@@ -5,6 +5,41 @@
 
 marker "recipe_start"
 
+# Quick decision. Is our node identifier the hostname, or the puppet node?
+if node[:'nd-puppet'][:config][:puppet_node]
+  pp_image_name = node[:'nd-puppet'][:config][:puppet_node]
+else
+  pp_image_name = node[:hostname]
+end
+
+# Generate our CSR Attributes hash.. used below.
+csr_attributes = {
+  'custom_attributes' => {
+    '1.2.840.113549.1.9.7' => node[:'nd-puppet'][:config][:challenge_password],
+  },
+  'extension_requests' => {
+    'pp_preshared_key' => node[:'nd-puppet'][:config][:pp_preshared_key],
+    'pp_image_name'    => pp_image_name
+  }
+}
+
+# Loop over every fact supplied to the trusted_facts array and add it to the
+# CSR file in-order.
+if node[:'nd-puppet'][:config][:trusted_facts]
+  node[:'nd-puppet'][:config][:trusted_facts].each do |fact|
+    # Split the key=value pair. Returns an array.
+    split_fact = fact.split("=", 2)
+
+    # Sanity check that this looks like an OID, and that there is a valid
+    # key=value pair here.
+    raise if not split_fact[0] =~ /^[0-9\.]+$/
+    raise if not split_fact[1]
+
+    # Finally, add the pair.
+    csr_attributes['extension_requests'][split_fact[0]] = split_fact[1]
+  end
+end
+
 # Step 1 is to figure out whether or not we've been run before. If we have
 # then we exit without running any of these configuration steps.
 node[:'nd-puppet'][:config][:state_files].each do |file|
@@ -39,16 +74,12 @@ end
 
 # If the challenge_password option was supplied, then we create the
 # /etc/puppet/csr_attributes.yaml file.
-template "/etc/puppet/csr_attributes.yaml" do
-  source "csr_attributes.yaml.erb"
+file "/etc/puppet/csr_attributes.yaml" do
+  content csr_attributes.to_yaml
   owner  "root"
   group  "root"
   mode   0644
-  variables({
-    :challenge_password => node[:'nd-puppet'][:config][:challenge_password],
-    :pp_preshared_key   => node[:'nd-puppet'][:config][:pp_preshared_key]
-  })
-  only_if { node[:'nd-puppet'][:config][:challenge_password] }
+  not_if {File.exists?("/var/lib/puppet/ssl/certificate_requests")}
 end
 
 # Tag the host to mark it as "awaiting signature". The Puppet Masters use this
