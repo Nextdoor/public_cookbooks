@@ -3,7 +3,7 @@
 # Recipe:: run
 #
 
-marker "recipe_start"
+marker "recipe_start_rightscale"
 
 # Determine whether or not we're going to be sending Puppet reports
 # or not when we run Puppet below.

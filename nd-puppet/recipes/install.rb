@@ -3,7 +3,7 @@
 # Recipe:: install
 #
 
-marker "recipe_start"
+marker "recipe_start_rightscale"
 
 # This is used to pick a few repos and package versions
 lsb_codename = node[:'lsb'][:codename]

@@ -3,7 +3,7 @@
 # Recipe:: clean
 #
 
-marker "recipe_start"
+marker "recipe_start_rightscale"
 
 # Make sure to stop and disable the Puppet service. If its enabled,
 # when the host boots next (during a reboot, re-image, etc), Puppet

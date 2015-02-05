@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-marker "recipe_start"
+marker "recipe_start_rightscale"
 
 # Install the various required packages for Puppet to function
 # properly on most hosts.
