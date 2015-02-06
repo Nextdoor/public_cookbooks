@@ -22,9 +22,9 @@ REPORT=<%= @report %>
 hostname --file /etc/hostname
 export DOMAIN=$(domainname)
 export HOSTNAME=$(cat /etc/hostname)
-echo "FQDN: ${HOSTNAME}.${DOMAIN}"
 
 # Unchanging variables ..
+CSR_ATTRIBUTES=/etc/puppet/csr_attributes.yaml
 AGENT_LOCK_FILE=/var/lib/puppet/state/agent_catalog_run.lock
 RUN_SUMMARY_FILE=/var/lib/puppet/state/last_run_summary.yaml
 
@@ -80,7 +80,7 @@ for (( C=1; C<=$RETRIES; C++ )); do
   # we purge the state files. This is because they will actually write out
   # 'changed: 0' to a state file. The simplest solution is to purge the
   # last run summary file so that our above-check doesnt read it.
-  $CMD && exit 0 || rm -f $RUN_SUMMARY_FILE
+  $CMD && exit 0 || rm -f $RUN_SUMMARY_FILE $CSR_ATTRIBUTES
 done
 
 # If we get here, then the 'exit 0' above never succeeded and we must have

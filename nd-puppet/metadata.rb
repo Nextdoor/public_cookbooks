@@ -4,7 +4,7 @@ maintainer_email 'cookbooks@nextdoor.com'
 license          'Apache 2.0'
 description      'Installs/Configures Puppet'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.2'
+version          '0.1.6'
 
 depends "marker"
 depends "machine_tag"
@@ -42,6 +42,17 @@ attribute "nd-puppet/config/facts",
     "A list of key=value custom puppet facts that will be stored in " +
     "/etc/facter/facts.d/nd-puppet.txt and available to Puppet as " +
     "facts for your manifest compilation. eg: my_cname=foobar",
+  :required     => "optional",
+  :type         => "array",
+  :category     => "Nextdoor: Puppet Settings",
+  :recipes      => [ "nd-puppet::default", "nd-puppet::config" ]
+
+attribute "nd-puppet/config/trusted_facts",
+  :display_name => "Custom Puppet Trusted Facts",
+  :description  =>
+    "A list of key=value custom puppet facts that will be stored in " +
+    "in the CSR for the client. Each fact should be listed with the OID " +
+    "and the value in a key=value format. Ie. 1.3.6.1.4.1.34380.1.2.1=Foo",
   :required     => "optional",
   :type         => "array",
   :category     => "Nextdoor: Puppet Settings",
