@@ -17,6 +17,7 @@ end
 # Install the various required packages for Puppet to function
 # properly on most hosts.
 [ "apt-transport-https",
+  "build-essential",
   "debconf-utils",
   "git",
   "lsb-base",
