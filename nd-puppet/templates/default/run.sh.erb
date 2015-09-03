@@ -33,6 +33,7 @@ CMD="puppet agent -t \
   ${REPORT}
   --pluginsync \
   --allow_duplicate_certs \
+  --no-stringify_facts \
   --detailed-exitcodes \
   --environment ${ENV} \
   --ca_server ${CA_SERVER} \
