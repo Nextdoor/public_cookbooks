@@ -50,7 +50,10 @@ end
 
 # Install the RightScale API Gems on the system for use when
 # puppet interacts with the RightScale API.
+#
+# Specifically do not use the 1.6+ gems -- they require Ruby 2.0
 gem_package "right_api_client" do
+  version "1.5.28"
   gem_binary "/usr/bin/gem"
   options "--no-ri --no-rdoc"
 end
