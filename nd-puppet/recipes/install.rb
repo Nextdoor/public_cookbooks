@@ -43,7 +43,7 @@ gem_package "mime-types" do
   options "--no-ri --no-rdoc"
 end
 gem_package "rest-client" do
-  version "1.6.7"
+  version "1.8.0"
   gem_binary "/usr/bin/gem"
   options "--no-ri --no-rdoc"
 end
