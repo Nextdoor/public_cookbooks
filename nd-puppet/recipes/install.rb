@@ -65,7 +65,7 @@ package "ruby-rest-client"
 gem_package "right_api_client" do
   version "1.5.28"
   gem_binary "/usr/bin/gem"
-  options "--no-ri --no-rdoc"
+  options "--ignore-dependencies --no-ri --no-rdoc"
 end
 
 # Install the puppetlabs-release package if its not already there
