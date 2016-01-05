@@ -34,37 +34,6 @@ end
   package pkg
 end
 
-# The mime-types 2.0+ gem relies on Ruby 1.9+, but most systems
-# specifically come with Ruby 1.8. Mime-types is a dependency
-# for the right_api_client below. (Same issue with the rest-client)
-gem_package "mime-types" do
-  version "1.25"
-  gem_binary "/usr/bin/gem"
-  options "--no-ri --no-rdoc"
-end
-
-if node["lsb"]["codename"] == "precise"
-  rest_client_ver = "1.6.7"
-else
-  rest_client_ver = "1.8.0"
-end
-
-gem_package "rest-client" do
-  version rest_client_ver
-  gem_binary "/usr/bin/gem"
-  options "--no-ri --no-rdoc"
-end
-
-# Install the RightScale API Gems on the system for use when
-# puppet interacts with the RightScale API.
-#
-# Specifically do not use the 1.6+ gems -- they require Ruby 2.0
-gem_package "right_api_client" do
-  version "1.5.28"
-  gem_binary "/usr/bin/gem"
-  options "--no-ri --no-rdoc"
-end
-
 # Download the Puppetlabs Apt package that installs their repo
 package_name = "puppetlabs-release-#{lsb_codename}.deb"
 package_url  = "http://apt.puppetlabs.com/#{package_name}"
@@ -82,6 +51,21 @@ execute "update_aptitude" do
   command "apt-get update -o APT::Get::List-Cleanup=0"
   ignore_failure true
   action :nothing
+end
+
+# The mime-types 2.0+ gem relies on Ruby 1.9+, but most systems
+# specifically come with Ruby 1.8. Mime-types is a dependency
+# for the right_api_client below. (Same issue with the rest-client)
+package "ruby-rest-client"
+
+# Install the RightScale API Gems on the system for use when
+# puppet interacts with the RightScale API.
+#
+# Specifically do not use the 1.6+ gems -- they require Ruby 2.0
+gem_package "right_api_client" do
+  version "1.5.28"
+  gem_binary "/usr/bin/gem"
+  options "--no-ri --no-rdoc"
 end
 
 # Install the puppetlabs-release package if its not already there
