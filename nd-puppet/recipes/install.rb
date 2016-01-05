@@ -42,8 +42,15 @@ gem_package "mime-types" do
   gem_binary "/usr/bin/gem"
   options "--no-ri --no-rdoc"
 end
+
+if node["lsb"]["codename"] == "precise"
+  rest_client_ver = "1.6.7"
+else
+  rest_client_ver = "1.8.0"
+end
+
 gem_package "rest-client" do
-  version "1.8.0"
+  version rest_client_ver
   gem_binary "/usr/bin/gem"
   options "--no-ri --no-rdoc"
 end
