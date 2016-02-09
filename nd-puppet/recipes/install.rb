@@ -62,8 +62,10 @@ package "ruby-rest-client"
 # puppet interacts with the RightScale API.
 #
 # Specifically do not use the 1.6+ gems -- they require Ruby 2.0
+# Lock to version 1.5.26 as it's the last known version that works with facter
+# on both ubuntu 12 and ubuntu 14
 gem_package "right_api_client" do
-  version "1.5.28"
+  version "1.5.26"
   gem_binary "/usr/bin/gem"
   options "--ignore-dependencies --no-ri --no-rdoc"
 end
