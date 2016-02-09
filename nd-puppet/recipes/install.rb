@@ -24,26 +24,16 @@ end
 # specifically come with Ruby 1.8. Mime-types is a dependency
 # for the right_api_client below.
 gem_package "mime-types" do
-  version "1.26"
+  version "1.25"
   gem_binary "/usr/bin/gem"
   options "--no-ri --no-rdoc"
 end
 
 # Install the RightScale API Gems on the system for use when
 # puppet interacts with the RightScale API.
-
-case node['platform_version']
-when '12.04'
-  gem package "right_api_client" do
-    gem_binary "/usr/bin/gem"
-    options "--no-ri --no-rdoc"
-    version "1.5.26"
-  end
-else
-  gem package "right_api_client" do
-    gem_binary "/usr/bin/gem"
-    options "--no-ri --no-rdoc"
-  end
+gem_package "right_api_client" do
+  gem_binary "/usr/bin/gem"
+  options "--no-ri --no-rdoc"
 end
 
 # Download the Puppetlabs Apt package that installs their repo
