@@ -24,7 +24,7 @@ end
 # specifically come with Ruby 1.8. Mime-types is a dependency
 # for the right_api_client below.
 gem_package "mime-types" do
-  version "1.25"
+  version "1.26"
   gem_binary "/usr/bin/gem"
   options "--no-ri --no-rdoc"
 end
