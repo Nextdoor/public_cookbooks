@@ -13,7 +13,8 @@ when "precise"
   ## Stolen from https://github.com/rightscale/rightscale_cookbooks/blob/master/cookbooks/ruby/recipes/install_1_9.rb
 
   # Installs ruby 1.9 with rubygems.
-  ["ruby1.9.1-full", "ruby1.9.1-dev", "rubygems", "libaugeas-ruby1.9.1", "ruby-dev"].each do |pkg|
+  ["ruby1.9.1-full", "ruby1.9.1-dev", "rubygems", "libaugeas-ruby1.9.1",
+   "ruby-dev", "libaugeas-ruby1.8"].each do |pkg|
     package pkg
   end
 
