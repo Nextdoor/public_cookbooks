@@ -8,10 +8,27 @@ marker "recipe_start"
 # This is used to pick a few repos and package versions
 lsb_codename = node[:'lsb'][:codename]
 
-if lsb_codename == "trusty"
-  rubygems_package = "rubygems-integration"
+case lsb_codename
+when "precise"
+  ## Stolen from https://github.com/rightscale/rightscale_cookbooks/blob/master/cookbooks/ruby/recipes/install_1_9.rb
+
+  # Installs ruby 1.9 with rubygems.
+  ["ruby1.9.1-full", "ruby1.9.1-dev", "rubygems", "libaugeas-ruby1.9.1"].each do |pkg|
+    package pkg
+  end
+
+  # Ubuntu can have multiple versions of ruby installed. Just need to run
+  # 'update-alternatives' to have the OS know which version to use.
+  bash "Use ruby 1.9" do
+    code <<-EOH
+      update-alternatives --set ruby "/usr/bin/ruby1.9.1"
+      update-alternatives --set gem "/usr/bin/gem1.9.1"
+    EOH
+  end
 else
-  rubygems_package = "rubygems"
+  ["rubygems-integration", "ruby-dev"].each do |pkg|
+    package pkg
+  end
 end
 
 # Install the various required packages for Puppet to function
@@ -24,11 +41,9 @@ end
   "lsb-core",
   "lsb-release",
   "lsb-security",
-  rubygems_package,
   "wget",
 
   # Requirements for building the right_api_client gem
-  "ruby-dev",
   "gcc"
 ].each do |pkg|
   package pkg
