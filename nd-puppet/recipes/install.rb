@@ -50,6 +50,10 @@ end
   package pkg
 end
 
+# Purge any custom /root/.gemrc files .. we want to leverage whatever
+# RightScale put into /etc/gemrc.
+#
+
 # Download the Puppetlabs Apt package that installs their repo
 package_name = "puppetlabs-release-#{lsb_codename}.deb"
 package_url  = "http://apt.puppetlabs.com/#{package_name}"
@@ -76,7 +80,12 @@ package "ruby-rest-client"
 
 # Install the RightScale API Gems on the system for use when
 # puppet interacts with the RightScale API.
-#
+if ::File.exist?('/root/.gemrc')
+  file '/root/.gemrc' do
+    action :delete
+  end
+end
+
 # Specifically do not use the 1.6+ gems -- they require Ruby 2.0
 # Lock to version 1.5.26 as it's the last known version that works with facter
 # on both ubuntu 12 and ubuntu 14
