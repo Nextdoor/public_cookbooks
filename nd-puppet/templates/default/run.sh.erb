@@ -23,6 +23,9 @@ hostname --file /etc/hostname
 export DOMAIN=$(domainname)
 export HOSTNAME=$(cat /etc/hostname)
 
+# Boot-optimized images (pre-cached AMIs) seem to boot up with LANG=US-ASCII
+export LANG=en_US.UTF-8
+
 # Unchanging variables ..
 CSR_ATTRIBUTES=/etc/puppet/csr_attributes.yaml
 AGENT_LOCK_FILE=/var/lib/puppet/state/agent_catalog_run.lock
