@@ -24,6 +24,7 @@ export DOMAIN=$(domainname)
 export HOSTNAME=$(cat /etc/hostname)
 
 # Boot-optimized images (pre-cached AMIs) seem to boot up with LANG=US-ASCII
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Unchanging variables ..
