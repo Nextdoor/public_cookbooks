@@ -4,9 +4,10 @@ maintainer_email 'cookbooks@nextdoor.com'
 license          'Apache 2.0'
 description      'Installs/Configures Puppet'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.0'
+version          '0.1.19'
 
-depends "rightscale"
+depends "marker"
+depends "machine_tag"
 
 supports "ubuntu"
 
@@ -41,6 +42,17 @@ attribute "nd-puppet/config/facts",
     "A list of key=value custom puppet facts that will be stored in " +
     "/etc/facter/facts.d/nd-puppet.txt and available to Puppet as " +
     "facts for your manifest compilation. eg: my_cname=foobar",
+  :required     => "optional",
+  :type         => "array",
+  :category     => "Nextdoor: Puppet Settings",
+  :recipes      => [ "nd-puppet::default", "nd-puppet::config" ]
+
+attribute "nd-puppet/config/trusted_facts",
+  :display_name => "Custom Puppet Trusted Facts",
+  :description  =>
+    "A list of key=value custom puppet facts that will be stored in " +
+    "in the CSR for the client. Each fact should be listed with the OID " +
+    "and the value in a key=value format. Ie. 1.3.6.1.4.1.34380.1.2.1=Foo",
   :required     => "optional",
   :type         => "array",
   :category     => "Nextdoor: Puppet Settings",
@@ -132,6 +144,15 @@ attribute "nd-puppet/config/environment",
   :description  =>
     "Puppet environment to request",
   :default      => "production",
+  :required     => "recommended",
+  :category     => "Nextdoor: Puppet Settings",
+  :recipes      => [ "nd-puppet::default", "nd-puppet::config", "nd-puppet::run" ]
+
+attribute "nd-puppet/config/timeout",
+  :display_name => "Puppet Execution Timeout (s)",
+  :description  =>
+    "Time to allow Puppet to run before failing (in seconds)",
+  :default      => "7200",
   :required     => "recommended",
   :category     => "Nextdoor: Puppet Settings",
   :recipes      => [ "nd-puppet::default", "nd-puppet::config", "nd-puppet::run" ]

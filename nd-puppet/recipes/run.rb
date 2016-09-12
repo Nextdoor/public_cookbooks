@@ -3,7 +3,7 @@
 # Recipe:: run
 #
 
-rightscale_marker
+marker "recipe_start"
 
 # Determine whether or not we're going to be sending Puppet reports
 # or not when we run Puppet below.
@@ -35,15 +35,18 @@ end
 
 # Execute the puppet run script we pushed above
 execute "run puppet-agent" do
-  command     "/etc/puppet/run.sh"
-  path        [ "/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin",
-                "/sbin", "/bin" ]
-  returns     [0]
+  command "/etc/puppet/run.sh"
+  path    [ "/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin",
+            "/sbin", "/bin" ]
+  returns [0]
+  timeout node[:'nd-puppet'][:config][:timeout].to_i
 end
 
 # At this point, Puppet has run successfully, so we remove the tag indicating
 # this host needs its cert signed.
-right_link_tag "nd:puppet_state=signed"
-right_link_tag "nd:puppet_secret=#{node[:'nd-puppet'][:config][:pp_preshared_key]}" do
-  action :remove
+machine_tag "nd:puppet_state=signed" do
+  action :create
+end
+machine_tag "nd:puppet_secret=#{node[:'nd-puppet'][:config][:pp_preshared_key]}" do
+  action :delete
 end

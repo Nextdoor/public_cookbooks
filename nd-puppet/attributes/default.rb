@@ -31,4 +31,5 @@ default[:'nd-puppet'][:config][:state_files] = [
         "/etc/puppet/csr_attributes.yaml"]
 
 # Puppet run attributes
+default[:'nd-puppet'][:run][:timeout] = 7200
 default[:'nd-puppet'][:run][:retries] = 5

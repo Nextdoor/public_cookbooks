@@ -4,12 +4,12 @@ maintainer_email 'cookbooks@nextdoor.com'
 license          'Apache 2.0'
 description      'Cleans a system for imaging'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.0.5'
+version          '0.0.6'
 
-depends "rightscale"
+depends "marker" 
 depends "nd-puppet"
 
-supports "ubuntu"
+supports"ubuntu"
 
 recipe "nd-cleaner::default",
   "Prepares a system for imaging by cleaning it."
